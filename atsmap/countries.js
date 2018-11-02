@@ -1,0 +1,1 @@
+g_countries_json = JSON.parse('{"CA":{"pos":[-100000,4000],"name":"California","country_code":"CA"},"NV":{"pos":[-90000,-14000],"name":"Nevada","country_code":"NV"},"AZ":{"pos":[-72000,22000],"name":"Arizona","country_code":"AZ"},"NM":{"pos":[-45000,24000],"name":"New Mexico","country_code":"NM"},"OR":{"pos":[-97000,-42000],"name":"Oregon","country_code":"OR"}}');

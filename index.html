@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VTLOG MAP</title>
+	<style type="text/css">
+		body {
+			margin: 0;
+			text-align: center;
+			font-family: Roboto;
+			font-size: 30px;
+			min-width: 100%;
+			min-height: 100%;
+			vertical-align: middle;
+			text-decoration: none;
+			color: white;
+		}
+		html {
+			background: url(images/background.jpg) no-repeat center center fixed; 
+  			-webkit-background-size: cover;
+  			-moz-background-size: cover;
+  			-o-background-size: cover;
+  			background-size: cover;
+  			min-height: 100%;
+		}
+		#logo {
+			max-width: 90%;
+			margin: 10px;
+			max-height: -1%;
+		}
+		a {
+			height: auto;
+			display: inline-block;
+			text-decoration: none;
+			margin:10px;
+			border-radius: 2px;
+			padding: 10px;
+			background-color: #3F51B5;
+			box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+			color: white;
+		}
+		#hide {
+			display: inline;
+			opacity: 0.6;
+		}
+		#alert {
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			top:0;
+			left:0;
+			background-image: url("img/st.png");
+			padding-top: 10%;
+			text-align: center;
+			opacity: 0;
+			transition: opacity 1s;
+			z-index: -1;
+		}
+		#alert i {
+			float: right;
+		}
+		#alert div {
+			background-color: white;
+			box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+			margin-left: 9%;
+			margin-right: 10%;
+			max-width: 500px;
+			width: 80%;
+			display: inline-block;
+			color: black;
+			text-align: left;
+			padding: 10px;
+			font-size: 13pt;
+		}
+		.material-icons {
+			cursor: pointer;
+		}
+	</style>
+	<link rel="icon" href="https://tour-o-matic.net/favicon.ico">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<meta name="theme-color" content="#0C151C">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, user-scalable=no,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+</head>
+<body>
+	<br><br>
+	<h1>Virtual Truck Log</h1>
+	<br>Select a map<br>
+	<div>
+		<a href="ets2"><img src="images/ets2logo.png"><br>Euro Truck Simulator</a><br>
+		<a href="ats"><img src="images/atslogosmall.png" ><br>American Truck Simulator</a>
+	</div>
+	<div id="alert">
+		<div>
+			<t style="font-size:18pt;">Map is not available</t>
+			<i class="material-icons" onclick="clearAlert()">&#xE14C;</i><br><br>
+			Description of the problem
+		</div>
+	</div>
+	<script type="text/javascript">
+		function putAlert() {
+			document.getElementById("alert").style.opacity = 1;
+			document.getElementById("alert").style.zIndex = 10;
+		}
+		function clearAlert() {
+			document.getElementById("alert").style.opacity = 0;
+			document.getElementById("alert").style.zIndex = -10;
+		}
+	</script>
+</body>
+</html>
