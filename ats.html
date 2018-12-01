@@ -1,3 +1,4 @@
+<!DOCTYPE HTML>
 <html>
 	<head>
 		<title>VTL MAP | ATS</title>
@@ -51,6 +52,9 @@
 		<div id="infopl"></div>
 		<div id="mapts" style="background-color: #252525 !important;"></div>
 		<script type="text/javascript" >
+			/*
+				Copyright 2018 Edoardo Grassi.
+			*/
 			(function() {var originalOnTouch = L.Draw.Polyline.prototype._onTouch;L.Draw.Polyline.prototype._onTouch = function( e ) {if( e.originalEvent.pointerType != 'mouse' ) {return originalOnTouch.call(this, e);}}})();
 			// VARIABLES
 			var url = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
