@@ -395,27 +395,31 @@
 					if (lastreq.readyState == 4 && lastreq.status == 200)
 						elab(lastreq.responseText);
 				}
-				lastreq.open("GET", "https://api.vtlog.net/v1/live/tracker?game=ats", true );
+				lastreq.open("GET", "https://tracker.vtlog.net/?game=ats", true ); // add to the link '&vtc=<your_vtc_id>' for showing only your vtc
 				lastreq.send( null );
 			}
 			function elab(text) {
 				try {
-					user = JSON.parse(text).response;
+					user = JSON.parse(text).response.clients;
 
 					infos = "";
 					playerslayer.clearLayers();
 					for (ob in user) {
-					 	truck = user[ob].telemetry.trackerdata;
-				 		coordtruck = game_coord_to_image(truck.location_x, truck.location_z);
-					 	eventclick = "map.setView(map.unproject(["+coordtruck[0]+","+coordtruck[1]+"], 8),7);putinfo(\""+user[ob].username+"\",\""+truck.truck_brand + " " +truck.truck_name+"\",\""+truck.speed+"\",\""+truck.fuel+"\",\""+truck.trailer_attached+"\",\""+truck.source_city+"\",\""+truck.destination_city+"\",\""+truck.truckdamage+"\",\""+truck.trailerdamage+"\");hidemenu();wanttofollow = [true,\""+user[ob].userID+"\"];";
-					 	temp = new L.Marker(map.unproject(coordtruck, 8), {icon: new L.DivIcon({className: 'player',html:"<div class='circle' id='"+user[ob].userID+"' onclick='"+eventclick+"'></div>"})});
+					 	truck = user[ob].data.truck;
+					 	jobStart = (user[ob].data.job != null) ? user[ob].data.job.source_city : -1;
+					 	jobEnd = (user[ob].data.job != null) ? user[ob].data.job.destination_city : -1;
+					 	trailerDamage = (user[ob].data.trailer != null) ? user[ob].data.trailer.wear.chassis : -1;
+					 	truckDamage = (truck.wear.cabin + truck.wear.chassis + truck.wear.engine + truck.wear.transmission + truck.wear.wheels) / 5;
+				 		coordtruck = game_coord_to_image(truck.position.x, truck.position.z);
+					 	eventclick = "map.setView(map.unproject(["+coordtruck[0]+","+coordtruck[1]+"], 8),7);putinfo(\""+user[ob].data.username+"\",\""+truck.brand + " " +truck.name+"\",\""+truck.speed+"\",\""+truck.fuel+"\",\""+jobStart+"\",\""+jobEnd+"\",\""+truckDamage+"\",\""+trailerDamage+"\");hidemenu();wanttofollow = [true,\""+user[ob].steamid+"\"];";
+					 	temp = new L.Marker(map.unproject(coordtruck, 8), {icon: new L.DivIcon({className: 'player',html:"<div class='circle' id='"+user[ob].steamid+"' onclick='"+eventclick+"'></div>"})});
 
 					 	playerslayer.addLayer(temp);
 						infos += "<li class='playerlist' onclick='"+eventclick+"'><i class='material-icons'>&#xE558;</i><div> </div>"+user[ob].username+"</li>";
-						if (user[ob].userID == wanttofollow[1] && wanttofollow[0] == true && document.getElementById(wanttofollow[1])) {
+						if (user[ob].steamid == wanttofollow[1] && wanttofollow[0] == true && document.getElementById(wanttofollow[1])) {
 							document.getElementById(wanttofollow[1]).style.backgroundColor = "#00C853";
 							map.setView(map.unproject([coordtruck[0],coordtruck[1]], 8), map.getZoom());
-							putinfo(user[ob].username,truck.truck_brand + " " +truck.truck_name,truck.speed,truck.fuel,truck.trailer_attached,truck.source_city,truck.destination_city,truck.truckdamage,truck.trailerdamage);
+							putinfo(user[ob].data.username,truck.brand + " " +truck.name,truck.speed,truck.fuel,jobStart,jobEnd,truckDamage,trailerDamage);
 						}
 					}
 					if (!document.getElementById(wanttofollow[1])) {
@@ -428,11 +432,14 @@
 				},500);
 				
 			}
-			function putinfo(nick,brand,speed,fuel,istrailer,from,to,damtruck,damtrailer) {
+			function putinfo(nick,brand,speed,fuel,from,to,damtruck,damtrailer) {
 				textvtc = " for VTC NAME ";
 				html = nick + "<p>Driving a " + brand + textvtc + "<br>Speed: " + parseInt(speed) + "km/h<br>Fuel: " + parseInt(fuel) + "L" + "<br>Truck damage: " + parseInt(damtruck) + "%<br>"
-				if (istrailer == 1) {
-					html += "With a trailer from " + from + " to " + to + "<br>Trailer damage: "+parseInt(damtrailer)+"%"
+				if (from != -1 && to != -1) {
+					html += "With a trailer from " + from + " to " + to + "<br>";
+				}
+				if (damtrailer != -1) {
+					html += "Trailer damage: " + parseInt(damtrailer) + "%";
 				}
 				html += "<i class='material-icons' onclick='document.getElementById(\"infopl\").style.bottom = \"-150px\";'>&#xE5CF;</i>"
 				document.getElementById("infopl").innerHTML = html;
