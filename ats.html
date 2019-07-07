@@ -65,18 +65,21 @@
 			var map = L.map('mapts', {
 				crs: L.CRS.Simple
 			});
-			var bounds = L.latLngBounds(map.unproject([0,135168], 8), map.unproject([128512,0], 8));
-			var uncoloured = L.tileLayer('atsmap/{z}/{x}_{y}.png', {
+			var bounds = L.latLngBounds(map.unproject([0,147456], 8), map.unproject([121856,0], 8));
+			var uncoloured = L.tileLayer('atsmap/uncoloured/{z}/{x}_{y}.png', {
 				maxZoom: 8,
 				minZoom: 0,
 				bounds: bounds,
 				tileSize: 512,
 				reuseTiles : true
 			}).addTo(map);
-			var overlayMaps = {
-			    "Flags":flagslayer,
-			    "Players":playerslayer
-			};
+			var coloured = L.tileLayer('atsmap/coloured/{z}/{x}_{y}.png', {
+				maxZoom: 8,
+				minZoom: 0,
+				bounds: bounds,
+				tileSize: 512,
+				reuseTiles : true
+			}).addTo(map);
 			var drawnItems = new L.FeatureGroup();
 		    var drawControl = new L.Control.Draw({
 		    	draw: {
@@ -115,7 +118,13 @@
 			map.zoomControl.setPosition('bottomright');
 			map.setMaxBounds(bounds);
 			map.setView(map.unproject([312,312], 0), 1);
-			L.control.layers([], overlayMaps ).addTo(map);
+			L.control.layers({
+				"Uncoloured":uncoloured,
+				"Coloured":coloured
+			}, {
+			    "Flags":flagslayer,
+			    "Players":playerslayer
+			} ).addTo(map);
 		    drawnItems.addTo(map);
 		    map.addControl(drawControl);
 
@@ -130,7 +139,7 @@
 			// ADDING FLAGS LAYERS...
 			Object.keys(g_countries_json).forEach(function(country) {
 				var pos = game_coord_to_image(g_countries_json[country].pos[0], g_countries_json[country].pos[1]);
-				temp = new L.Marker(map.unproject(pos, 8), {icon: new L.DivIcon({className: 'flags',html:'<img src="flags/ats/' + g_countries_json[country].country_code.toLowerCase() + '.svg" ><br>' + g_countries_json[country].name})}).addTo(map);
+				temp = new L.Marker(map.unproject(pos, 8), {icon: new L.DivIcon({className: 'flags',html:'<img src="flags/' + g_countries_json[country].country_code.toLowerCase() + '.svg" ><br>' + g_countries_json[country].name})}).addTo(map);
 				flagslayer.addLayer(temp);
 			});
 			flagslayer.addTo(map);
@@ -387,7 +396,7 @@
 				document.getElementById("drawer").style.left = "-360px";
 			}
 			function game_coord_to_image(x, y) {
-				return [x / 0.78125 + 166400 , y / 0.78125 + 76800];
+				return [x / 0.78125 + 160000 , y / 0.78125 + 96000];
 			}
 			function getUsers(resp){
 				var lastreq = new XMLHttpRequest();
@@ -415,7 +424,7 @@
 					 	temp = new L.Marker(map.unproject(coordtruck, 8), {icon: new L.DivIcon({className: 'player',html:"<div class='circle' id='"+user[ob].steamid+"' onclick='"+eventclick+"'></div>"})});
 
 					 	playerslayer.addLayer(temp);
-						infos += "<li class='playerlist' onclick='"+eventclick+"'><i class='material-icons'>&#xE558;</i><div> </div>"+user[ob].username+"</li>";
+						infos += "<li class='playerlist' onclick='"+eventclick+"'><i class='material-icons'>&#xE558;</i><div> </div>"+user[ob].data.username+"</li>";
 						if (user[ob].steamid == wanttofollow[1] && wanttofollow[0] == true && document.getElementById(wanttofollow[1])) {
 							document.getElementById(wanttofollow[1]).style.backgroundColor = "#00C853";
 							map.setView(map.unproject([coordtruck[0],coordtruck[1]], 8), map.getZoom());

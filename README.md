@@ -67,7 +67,7 @@ This represent how JS expect to receive a request following the format of VTLog'
             "data": {
                 "job": {
                     "destination_city": "Le Mans",
-                    "destination_company": "Wilnet Transport",
+                    "source_city": "Cassino",
                 },
                 "trailer": {
                     "wear": {

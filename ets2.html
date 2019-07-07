@@ -66,17 +66,20 @@
 				crs: L.CRS.Simple
 			});
 			var bounds = L.latLngBounds(map.unproject([0,192512], 8), map.unproject([173568,0], 8));
-			var uncoloured = L.tileLayer('ets2map/{z}/{x}_{y}.png', {
+			var uncoloured = L.tileLayer('ets2map/uncoloured/{z}/{x}_{y}.png', {
 				maxZoom: 8,
 				minZoom: 0,
 				bounds: bounds,
 				tileSize: 512,
 				reuseTiles : true
 			}).addTo(map);
-			var overlayMaps = {
-			    "Flags":flagslayer,
-			    "Players":playerslayer
-			};
+			var coloured = L.tileLayer('ets2map/coloured/{z}/{x}_{y}.png', {
+				maxZoom: 8,
+				minZoom: 0,
+				bounds: bounds,
+				tileSize: 512,
+				reuseTiles : true
+			}).addTo(map);
 			var drawnItems = new L.FeatureGroup();
 		    var drawControl = new L.Control.Draw({
 		    	draw: {
@@ -115,7 +118,13 @@
 			map.zoomControl.setPosition('bottomright');
 			map.setMaxBounds(bounds);
 			map.setView(map.unproject([312,312], 0), 1);
-			L.control.layers([], overlayMaps ).addTo(map);
+			L.control.layers({
+				"Uncoloured": uncoloured,
+				"Coloured":coloured
+			}, {
+			    "Flags":flagslayer,
+			    "Players":playerslayer
+			}).addTo(map);
 		    drawnItems.addTo(map);
 		    map.addControl(drawControl);
 
@@ -388,9 +397,6 @@
 			}
 			function game_coord_to_image(x, y) {
 				var r = [x / 0.78125 + 89600 , y / 0.78125 + 89600];
-				if (x < -31056.8 && y < -5832.867) {
-					r = [r[0] / 1.3333333 + 10750, r[1] / 1.3333333 + 21410];
-				}
 				return r;
 			}
 			function getUsers(resp){
@@ -419,7 +425,7 @@
 					 	temp = new L.Marker(map.unproject(coordtruck, 8), {icon: new L.DivIcon({className: 'player',html:"<div class='circle' id='"+user[ob].steamid+"' onclick='"+eventclick+"'></div>"})});
 
 					 	playerslayer.addLayer(temp);
-						infos += "<li class='playerlist' onclick='"+eventclick+"'><i class='material-icons'>&#xE558;</i><div> </div>"+user[ob].username+"</li>";
+						infos += "<li class='playerlist' onclick='"+eventclick+"'><i class='material-icons'>&#xE558;</i><div> </div>"+user[ob].data.username+"</li>";
 						if (user[ob].steamid == wanttofollow[1] && wanttofollow[0] == true && document.getElementById(wanttofollow[1])) {
 							document.getElementById(wanttofollow[1]).style.backgroundColor = "#00C853";
 							map.setView(map.unproject([coordtruck[0],coordtruck[1]], 8), map.getZoom());

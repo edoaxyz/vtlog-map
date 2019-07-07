@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" >
+
+	<symbol id="arrow" viewBox="0 0 30 30">
+		<polygon stroke="black" stroke-width="3" stroke-linejoin="round" fill="#158CFB" points="15 5,23 25,15 22,7 25"/>
+	</symbol>
+
+	<symbol id="arrowvtc" viewBox="0 0 30 30">
+		<polygon points="15 5,23 25,15 22,7 25" fill="#E0E0E0" stroke="#E65100" stroke-linejoin="round" stroke-width="3px" />
+	</symbol>
+
+	<symbol id="arrowfollow" viewBox="0 0 30 30">
+		<polygon stroke="black" stroke-width="3" stroke-linejoin="round" fill="#00C853" points="15 5,23 25,15 22,7 25"/>
+	</symbol>
+
+	<symbol id="arrowvtcfollow" viewBox="0 0 30 30">
+		<polygon points="15 5,23 25,15 22,7 25" fill="#F9A825" stroke="#BF360C" stroke-linejoin="round" stroke-width="3px" />
+	</symbol>
+
+	<symbol id="point" viewBox="0 0 30 30">
+		<circle cx="15" cy="15" r="7" stroke="black" stroke-width="4" fill="#158CFB" />
+	</symbol>
+	
+	<symbol id="pointvtc" viewBox="0 0 30 30">
+		<circle cx="15" cy="15" r="7" stroke="#E65100" stroke-width="4" fill="#E0E0E0" />
+	</symbol>
+
+	<symbol id="pointfollow" viewBox="0 0 30 30">
+		<circle cx="15" cy="15" r="7" stroke="black" stroke-width="4" fill="#00C853" />
+	</symbol>
+
+	<symbol id="pointvtcfollow" viewBox="0 0 30 30">
+		<circle cx="15" cy="15" r="7" stroke="#BF360C" stroke-width="4" fill="#F9A825" />
+	</symbol>
+</svg>
